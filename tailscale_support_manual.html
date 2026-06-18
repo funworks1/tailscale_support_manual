@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tailscale 遠隔サポートマニュアル — 担当者用</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Share+Tech+Mono&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy:   #0D2137;
+    --blue:   #1A5276;
+    --accent: #2E86C1;
+    --teal:   #148F77;
+    --teal-l: #D5F5E3;
+    --amber:  #B7770D;
+    --amber-l:#FEF9E7;
+    --red:    #922B21;
+    --red-l:  #FDEDEC;
+    --gray:   #F2F3F4;
+    --border: #D5D8DC;
+    --text:   #1C2833;
+    --muted:  #717D7E;
+    --white:  #FFFFFF;
+    --purple: #6C3483;
+    --purple-l:#F4ECF7;
+  }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: #EAF0F6;
+    color: var(--text);
+    padding: 32px 16px 80px;
+    line-height: 1.7;
+  }
+
+  .page { max-width: 820px; margin: 0 auto; }
+
+  .cover {
+    background: var(--navy);
+    border-radius: 14px;
+    padding: 36px 40px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .cover::after {
+    content: 'SUPPORT';
+    position: absolute;
+    right: -10px; bottom: -24px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 72px;
+    color: rgba(255,255,255,0.04);
+    user-select: none;
+  }
+  .cover-tag {
+    display: inline-block;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: #F8C471;
+    background: rgba(248,196,113,0.12);
+    border: 1px solid rgba(248,196,113,0.3);
+    border-radius: 4px;
+    padding: 4px 10px; margin-bottom: 14px;
+  }
+  .cover h1 { font-size: 22px; font-weight: 700; color: var(--white); line-height: 1.4; margin-bottom: 10px; }
+  .cover p  { font-size: 13px; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+  /* Notice */
+  .notice {
+    background: var(--amber-l);
+    border: 1px solid #F9E79F;
+    border-left: 4px solid var(--amber);
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13px; line-height: 1.75;
+  }
+  .notice strong { color: var(--amber); }
+
+  /* Section */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .sec-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px;
+    background: var(--navy);
+  }
+  .sec-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px; color: #AED6F1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 4px; padding: 2px 8px; flex-shrink: 0;
+  }
+  .sec-title { font-size: 14px; font-weight: 700; color: var(--white); }
+  .sec-badge {
+    margin-left: auto;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 99px;
+    white-space: nowrap;
+  }
+  .badge-support { background: #F8C471; color: #784212; }
+  .badge-user    { background: #ABEBC6; color: #1E8449; }
+  .badge-both    { background: #D2B4DE; color: #6C3483; }
+
+  /* Steps */
+  .steps { padding: 0 20px 20px; }
+  .step {
+    display: flex; gap: 12px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--gray);
+    align-items: flex-start;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-num {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: var(--accent); color: var(--white);
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; margin-top: 2px;
+  }
+  .step-num.support { background: var(--amber); }
+  .step-num.user    { background: var(--teal); }
+  .step-body { flex: 1; }
+  .step-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+  .step-desc  { font-size: 13px; color: var(--muted); line-height: 1.75; }
+
+  .who {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 4px; margin-bottom: 6px;
+  }
+  .who-support { background: #FEF9E7; color: var(--amber); border: 1px solid #F9E79F; }
+  .who-user    { background: var(--teal-l); color: var(--teal); border: 1px solid #82E0AA; }
+
+  .script {
+    background: #F0F3F4;
+    border-left: 3px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 10px 14px;
+    margin-top: 8px;
+    font-size: 13px; color: var(--blue); line-height: 1.75;
+    font-style: italic;
+  }
+  .script::before { content: '💬 '; font-style: normal; }
+
+  .caution {
+    background: var(--red-l);
+    border: 1px solid #F1948A;
+    border-left: 4px solid var(--red);
+    border-radius: 6px;
+    padding: 10px 14px; margin-top: 10px;
+    font-size: 12px; color: var(--red); line-height: 1.7;
+  }
+  .tip {
+    background: var(--teal-l);
+    border: 1px solid #82E0AA;
+    border-left: 4px solid var(--teal);
+    border-radius: 6px;
+    padding: 10px 14px; margin-top: 10px;
+    font-size: 12px; color: var(--teal); line-height: 1.7;
+  }
+  .code {
+    background: var(--navy);
+    border-radius: 6px;
+    padding: 10px 14px; margin-top: 8px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px; color: #AED6F1; line-height: 1.8;
+  }
+
+  /* Trouble table */
+  .trouble { padding: 0 20px 20px; }
+  .trouble-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    border-bottom: 1px solid var(--gray);
+    padding: 12px 0;
+  }
+  .trouble-row:last-child { border-bottom: none; }
+  .trouble-q { font-size: 13px; font-weight: 700; color: var(--red); line-height: 1.6; padding-right: 12px; }
+  .trouble-a { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* Checklist */
+  .checklist { padding: 0 20px 20px; }
+  .check-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--gray);
+    font-size: 13px;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-box {
+    width: 18px; height: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px; flex-shrink: 0; margin-top: 2px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 18px;
+    margin-bottom: 20px;
+    align-items: center;
+    font-size: 12px;
+  }
+  .legend-label { font-weight: 700; color: var(--muted); margin-right: 4px; }
+
+  @media screen and (max-width: 600px) {
+    body { padding: 12px 10px 60px; }
+    .cover { padding: 24px 20px; }
+    .cover h1 { font-size: 18px; }
+    .trouble-row { grid-template-columns: 1fr; gap: 6px; }
+    .sec-badge { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Cover -->
+  <div class="cover">
+    <div class="cover-tag">担当者専用 — 遠隔サポートマニュアル</div>
+    <h1>Tailscale 導入サポートガイド<br>Zoom 画面共有対応版</h1>
+    <p>営業員のTailscaleインストールからExit node選択まで<br>Zoom画面共有で遠隔サポートする際の進め方・声かけ例をまとめています。</p>
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <span class="legend-label">凡例：</span>
+    <span class="who who-support">担当者が行う</span>
+    <span class="who who-user">営業員に操作してもらう</span>
+  </div>
+
+  <!-- Notice -->
+  <div class="notice">
+    <strong>【重要】この作業は管理者権限を持つ担当者のみ実施できます</strong><br>
+    管理権限のない事務員に依頼する場合は、先にその事務員のTailscale管理権限を設定してから依頼してください。<br>
+    管理権限の設定方法は「00 管理コンソールでアカウントを作成する」を参照してください。
+  </div>
+
+  <!-- Section 事前準備: Slack送付 -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">事前</span>
+      <span class="sec-title">事前準備 — Zoomサポート前にSlackで送付する</span>
+      <span class="sec-badge badge-support">管理者のみ</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num support">1</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が行う（Zoom日程調整前に送付）</div>
+          <div class="step-title">以下の文章をそのままSlackで営業員に送付する</div>
+          <div class="step-desc">確認①②が取れた上でZoomの日程を設定してください。</div>
+          <div class="code" style="line-height:2;">
+            ━━━━━━━━━━━━━━━━━━━━━━━━<br>
+            【Tailscale導入のご案内】<br>
+            ━━━━━━━━━━━━━━━━━━━━━━━━<br>
+            Zoomでの設定サポート前に以下4点をご確認ください。<br>
+            <br>
+            ✅ ご確認事項<br>
+            ① SBIのリモート申請はお済みでしょうか<br>
+            <br>
+            ② あかつきへのご自宅PCからの接続はできていますでしょうか<br>
+            <br>
+            ③ お使いのPCがWindows 11以降であること<br>
+            　　確認方法：スタートボタン右クリック→「システム」<br>
+            　　→「Windowsの仕様」でバージョンを確認<br>
+            <br>
+            ④ 業務専用のPC（個人でお持ちのもの）であること<br>
+            　　※ご家族と共有しているPCへのインストールは<br>
+            　　　セキュリティ上NGとなっています<br>
+            <br>
+            📥 ダウンロードリンク<br>
+            https://tailscale.com/download<br>
+            （Zoom開始後に一緒に進めますので、<br>
+            　今は開かなくて大丈夫です）<br>
+            <br>
+            ご不明な点はお気軽にご連絡ください。<br>
+            ━━━━━━━━━━━━━━━━━━━━━━━━
+          </div>
+          <div class="caution">⚠️ ①②のいずれかが未完了の場合はZoomサポートに進まず、まず事務員にメンションしてください。<br>
+          <br>
+          @事務員<br>
+          〇〇さんのTailscale導入に向けて、ご自宅PCでの設定手続きをお願いできますでしょうか。<br>
+          （SBIリモート申請・あかつき接続設定）<br>
+          <br>
+          ➡ 事務員からの完了連絡を受けてからZoomの日程調整に進んでください。</div>
+          <div class="tip">💡 Windows 11未満の場合はサポート対象外です。Windows 11へのアップグレードをお伝えください。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 0: 管理コンソールでアカウント作成 -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">00</span>
+      <span class="sec-title">事前準備 — 管理コンソールでアカウントを作成する</span>
+      <span class="sec-badge badge-support">管理者のみ</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num support">1</div>
+        <div class="step-body">
+          <div class="who who-support">管理者が行う</div>
+          <div class="step-title">管理コンソールにアクセスする</div>
+          <div class="step-desc">ブラウザで管理コンソールを開き、管理者アカウントでログインします。</div>
+          <div class="code">admin.tailscale.com</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num support">2</div>
+        <div class="step-body">
+          <div class="who who-support">管理者が行う</div>
+          <div class="step-title">招待リンクを発行する</div>
+          <div class="step-desc">上部タブの「Users」をクリックし、右上の「Invite users」ボタンをクリックします。招待する営業員のメールアドレス（会社のMicrosoftアカウント）を入力して「Send invite」をクリックします。</div>
+          <div class="code">
+            上部タブ「Users」をクリック<br>
+            → 右上「Invite users」ボタンをクリック<br>
+            → メールアドレスを入力（〇〇@〇〇.co.jp）<br>
+            → Role：「Member」を選択<br>
+            → Send invite
+          </div>
+          <div class="tip">💡 RoleはMemberで問題ありません。AdminはACLや設定変更ができる権限のため、担当者以外には付与しないでください。</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num support">3</div>
+        <div class="step-body">
+          <div class="who who-support">管理者が行う（必要な場合のみ）</div>
+          <div class="step-title">事務員に管理権限を付与する場合</div>
+          <div class="step-desc">管理作業を事務員に任せる場合は以下の手順でAdmin権限を付与します。退職時は必ずすぐに権限を外してください。</div>
+          <div class="code">
+            上部タブ「Users」をクリック<br>
+            → 該当の事務員名をクリック<br>
+            → Role を「Member」→「Admin」に変更<br>
+            → Save
+          </div>
+          <div class="caution">⚠ Admin権限はACL・端末削除・ユーザー管理など全操作が可能になります。退職・異動時は必ず権限を外してください。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 1: 事前確認 -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">01</span>
+      <span class="sec-title">画面共有開始・事前確認</span>
+      <span class="sec-badge badge-both">担当者 ＋ 営業員</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num support">1</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が行う</div>
+          <div class="step-title">画面共有を依頼する</div>
+          <div class="script">「お時間いただきありがとうございます。まずZoomの画面共有をお願いできますか？画面全体を共有していただければ大丈夫です。」</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num support">2</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が確認する</div>
+          <div class="step-title">Windowsのバージョンを確認する</div>
+          <div class="script">「スタートボタンを右クリックして『システム』を開いていただけますか？」</div>
+          <div class="step-desc" style="margin-top:8px;">「Windowsの仕様」欄に「Windows 11」と表示されていればOKです。</div>
+          <div class="caution">⚠ Windows 11未満（Windows 10・8・7等）はサポート対象外です。Windows 11へのアップグレードをお伝えください。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num support">3</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が確認する</div>
+          <div class="step-title">インターネット接続を確認する</div>
+          <div class="script">「ブラウザでどこかのサイトを開いていただけますか？ネットにつながっているか確認したいので。」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 2: ダウンロード -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">02</span>
+      <span class="sec-title">Tailscaleのダウンロード・インストール</span>
+      <span class="sec-badge badge-user">営業員が操作</span>
+    </div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num user">1</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">SlackのURLを開いて「Download Tailscale for Windows」をクリック</div>
+          <div class="script">「『Download Tailscale for Windows』という青いボタンをクリックしてください。」</div>
+          <div class="tip">💡 ダウンロードに30秒〜1分かかる場合があります。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num user">2</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">インストーラーを実行する</div>
+          <div class="script">「ダウンロードが終わったら、ブラウザの下に出てくるファイルをクリックして実行してください。」</div>
+          <div class="step-desc" style="margin-top:8px;">「このアプリがデバイスに変更を加えることを許可しますか？」と表示されたら「はい」をクリックしてもらいます。</div>
+
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num support">3</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が確認する</div>
+          <div class="step-title">インストール完了を確認する</div>
+          <div class="step-desc">タスクトレイ（画面右下）にTailscaleのアイコンが表示されればインストール完了です。</div>
+          <div class="script">「画面右下の時計の近くにアイコンが出てきましたか？小さいドットのアイコンです。」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: ログイン -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">03</span>
+      <span class="sec-title">Tailscaleにログインする</span>
+      <span class="sec-badge badge-both">担当者 ＋ 営業員</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num user">1</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">タスクトレイにアイコンを表示する設定をする</div>
+          <div class="script">「まずTailscaleのアイコンが右下に常に表示されるよう設定しましょう。スタートボタンをクリックして『設定』を開いてください。」</div>
+          <div class="code">
+            設定 → 個人設定 → タスクバー<br>
+            → 「システムトレイアイコン」または<br>
+            　「タスクバーコーナーのオーバーフロー」<br>
+            → Tailscale を「オン」に切り替える
+          </div>
+          <div class="tip">💡 この設定をしておくと、毎回「∧」を押さなくてもアイコンが常に見えるようになります。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num user">2</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">タスクトレイのアイコンを右クリック</div>
+          <div class="script">「右下にTailscaleのアイコンが表示されましたか？そのアイコンを右クリックしてください。メニューが出てきます。」</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num user">3</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">「Log in」をクリックしてブラウザでサインイン</div>
+          <div class="script">「『Log in』をクリックするとブラウザが開きます。Microsoftのサインイン画面が出てくるので、会社のメールアドレス（〇〇@〇〇.co.jp）でサインインしてください。」</div>
+          <div class="tip">💡 「Sign in with Microsoft」ボタンをクリックして会社アカウントでログインします。</div>
+          <div class="caution">⚠ 個人のMicrosoftアカウントやGoogleアカウントでログインしないよう注意してください。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num support">4</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が行う</div>
+          <div class="step-title">管理コンソールで端末を確認・タグを付与する</div>
+          <div class="step-desc">自分のPCで admin.tailscale.com を開き、「Machines」タブに新しい端末が表示されていることを確認します。</div>
+          <div class="code">
+            admin.tailscale.com<br>
+            → Machines タブ<br>
+            → 新しい端末を確認<br>
+            → 該当端末の「・・・」メニュー → Edit tags<br>
+            → 該当の支店タグを選択して保存<br>
+            　　（タグはハブPC設置時に作成済み）<br>
+            　　<br>
+            　　本店所属 → tag:Honten-machine1（2台目はmachine2）<br>
+            　　大阪所属 → tag:Osaka-machine1<br>
+            　　渋谷所属 → tag:Shibuya-machine1<br>
+            　　神戸所属 → tag:Kobe-machine1
+          </div>
+          <div class="tip">
+            💡 タグを付ける理由<br>
+            ・誰がどの支店から繋いでいるか把握できる<br>
+            ・全国250名に展開したとき管理が混乱しない
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num support">5</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が確認する</div>
+          <div class="step-title">ログイン完了を確認する</div>
+          <div class="step-desc">タスクトレイのアイコンを右クリックして「Connected」と表示されていればログイン完了です。</div>
+          <div class="script">「アイコンを右クリックして、一番上に『Connected』と表示されていますか？」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 4: Exit node設定 -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">04</span>
+      <span class="sec-title">Exit nodeを選択して動作確認する</span>
+      <span class="sec-badge badge-user">営業員が操作</span>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num user">1</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">「Exit nodes」→ 所属支店を選択する</div>
+          <div class="script">「アイコンを右クリックして『Exit nodes』を選んでください。一覧が出てきたら〇〇-hubを選択してください。」</div>
+          <div class="caution">⚠「Recommended: 〇〇-hub」が出ることがありますが、必ず所属支店名（〇〇-hub）をご自身で選んでもらってください。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num support">2</div>
+        <div class="step-body">
+          <div class="who who-support">担当者が確認する</div>
+          <div class="step-title">アイコンにドット＋矢印が表示されているか確認</div>
+          <div class="step-desc">タスクトレイのアイコンにドット＋右矢印が表示されていればExit node接続中です。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num user">3</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">証券会社のシステムにアクセスして動作確認</div>
+          <div class="script">「いつも使っている証券会社のシステムを開いてみてください。正常に表示されますか？」</div>
+          <div class="tip">💡 接続に5〜10秒かかる場合があります。</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num user">4</div>
+        <div class="step-body">
+          <div class="who who-user">営業員に操作してもらう</div>
+          <div class="step-title">使い終わったらExit nodeをNoneに戻す練習</div>
+          <div class="script">「最後に練習です。アイコンを右クリック→Exit nodes→Noneを選んでみてください。証券会社のシステムを使い終わったら毎回この操作をお願いします。」</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 5: よくあるトラブル -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">05</span>
+      <span class="sec-title">サポート中によくあるトラブルと対処法</span>
+    </div>
+    <div class="trouble">
+      <div class="trouble-row">
+        <div class="trouble-q">「Log in」が表示されない</div>
+        <div class="trouble-a">一度タスクトレイのアイコンを右クリックして「Exit」でアプリを終了し、スタートメニューから再起動する</div>
+      </div>
+      <div class="trouble-row">
+        <div class="trouble-q">ブラウザが開かない・ログイン画面が出ない</div>
+        <div class="trouble-a">デフォルトブラウザがChromeかEdgeか確認する。IEが開く場合はChromeで tailscale.com/login を直接開いてもらう</div>
+      </div>
+      <div class="trouble-row">
+        <div class="trouble-q">「はい」が押せない・管理者権限エラー</div>
+        <div class="trouble-a">PCの管理者アカウントでログインしてからインストールしてもらう。会社支給PCの場合はIT管理者に確認</div>
+      </div>
+      <div class="trouble-row">
+        <div class="trouble-q">「Connected」にならない</div>
+        <div class="trouble-a">管理コンソールでデバイスが承認されているか確認。未承認の場合は Machines タブから承認する</div>
+      </div>
+      <div class="trouble-row">
+        <div class="trouble-q">Exit nodesに支店名が出ない</div>
+        <div class="trouble-a">支店のハブPCが起動しているか確認する。起動していれば1〜2分待って再度確認してもらう</div>
+      </div>
+      <div class="trouble-row">
+        <div class="trouble-q">証券会社のシステムにつながらない</div>
+        <div class="trouble-a">①Exit nodeが選択されているか確認 ②所属支店のノードを選んでいるか確認 ③一度NoneにしてからExit nodeを選び直してもらう</div>
+      </div>
+      <div class="trouble-row">
+        <div class="trouble-q">画面共有が途切れる・Zoomが重い</div>
+        <div class="trouble-a">Tailscaleのインストール中は一時的に回線が重くなることがある。インストール完了後に安定することを伝える</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 6: 完了チェックリスト -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">06</span>
+      <span class="sec-title">サポート完了チェックリスト</span>
+    </div>
+    <div class="checklist">
+      <div class="check-item"><div class="check-box"></div>Tailscaleのインストールが完了している</div>
+      <div class="check-item"><div class="check-box"></div>会社のMicrosoftアカウントでログインできている</div>
+      <div class="check-item"><div class="check-box"></div>管理コンソールで端末が表示・承認されている</div>
+      <div class="check-item"><div class="check-box"></div>タスクトレイに「Connected」が表示されている</div>
+      <div class="check-item"><div class="check-box"></div>所属支店のExit nodeが選択できている</div>
+      <div class="check-item"><div class="check-box"></div>証券会社のシステムに正常にアクセスできた</div>
+      <div class="check-item"><div class="check-box"></div>Exit nodeをNoneに戻す操作を練習してもらった</div>
+      <div class="check-item"><div class="check-box"></div>操作マニュアル（日常操作ガイド）のURLを共有した</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
