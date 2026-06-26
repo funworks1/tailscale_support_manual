@@ -267,12 +267,12 @@
             ━━━━━━━━━━━━━━━━━━━━━━━━<br>
             【Tailscale導入のご案内】<br>
             ━━━━━━━━━━━━━━━━━━━━━━━━<br>
-            Zoomでの設定サポート前に以下4点をご確認ください。<br>
+            Zoomでの設定サポート前に以下5点をご確認ください。<br>
             <br>
             ✅ ご確認事項<br>
             ① SBIのリモート申請はお済みでしょうか<br>
             <br>
-            ② あかつきへのご自宅PCからの接続はできていますでしょうか<br>
+            ② あかつきポータルサイトへご自宅PCからの接続はできていますでしょうか<br>
             <br>
             ③ お使いのPCがWindows 11以降であること<br>
             　　確認方法：スタートボタン右クリック→「システム」<br>
@@ -282,10 +282,16 @@
             　　※ご家族と共有しているPCへのインストールは<br>
             　　　セキュリティ上NGとなっています<br>
             <br>
-            📥 ダウンロードリンク<br>
-            https://tailscale.com/download<br>
+            ⑤ 各証券会社のID・パスワードをご用意ください（IFA基本情報に記載）<br>
+            　　※端末が変わるため、ブラウザ保存のパスワードは引き継がれません<br>
+            <br>
+            📥 <a href="https://tailscale.com/download" target="_blank" style="color:#AED6F1;">Tailscaleダウンロード</a><br>
             （Zoom開始後に一緒に進めますので、<br>
             　今は開かなくて大丈夫です）<br>
+            <br>
+            📎 添付資料<br>
+            <a href="https://funworks1.github.io/tailscale_manual_day/tailscale_manual_day.html" target="_blank" style="color:#AED6F1;">Tailscale日常操作ガイド</a><br>
+            <a href="https://funworks1.github.io/setup-guide/setup-guide.html" target="_blank" style="color:#AED6F1;">自宅PC初期設定ガイド</a><br>
             <br>
             ご不明な点はお気軽にご連絡ください。<br>
             ━━━━━━━━━━━━━━━━━━━━━━━━
@@ -352,6 +358,90 @@
           <div class="caution">⚠ Admin権限はACL・端末削除・ユーザー管理など全操作が可能になります。退職・異動時は必ず権限を外してください。</div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <!-- Section: 各証券会社の接続方式 -->
+  <div class="section">
+    <div class="sec-head">
+      <span class="sec-num">確認</span>
+      <span class="sec-title">各証券会社への接続方式 — 画面共有前に確認しておくこと</span>
+      <span class="sec-badge badge-support">管理者のみ</span>
+    </div>
+    <div class="steps">
+
+      <div class="step">
+        <div class="step-num support">●</div>
+        <div class="step-body">
+          <div class="step-title">【楽天証券】楽天IFA管理WEB</div>
+          <div class="tip">💡 Tailscale経由で利用可能</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num support">●</div>
+        <div class="step-body">
+          <div class="step-title">【マネックス証券】IFAポータル・SmoothFile</div>
+          <div class="tip">💡 Tailscale経由で利用可能</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num support">●</div>
+        <div class="step-body">
+          <div class="step-title">【SBI証券】IFAポータル</div>
+          <div class="step-desc" style="margin-top:6px;">
+            ・Windows環境必須<br>
+            ・リモート申請が必要<br>
+            ・証明書再発行申請後、自宅PCへ証明書を登録
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num support">●</div>
+        <div class="step-body">
+          <div class="step-title">【あかつき証券】IFAポータル</div>
+          <div class="step-desc" style="margin-top:6px;">
+            ・証明書再発行申請後、自宅PCへ証明書を登録<br>
+            ・証明書の発行制限は特になし<br>
+            ・入社時に証明書発行手続き済みだが、Chrome リモート経由でIFAポータルを使用していた場合は自宅PCに証明書が未登録の可能性あり
+          </div>
+          <div class="caution">⚠ ご自宅PCからあかつきIFAポータルに接続できるか確認必須</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num support">●</div>
+        <div class="step-body">
+          <div class="step-title">【あかつき証券】DREAMモバイル</div>
+          <div class="step-desc" style="margin-top:6px;">
+            自宅PCにBIG-IP Edge Clientをインストールすれば使用可能
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num support">●</div>
+        <div class="step-body">
+          <div class="step-title">【東海東京証券】仲介業者掲示板</div>
+          <div class="tip">💡 URLからアクセス可、環境問わない</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num support">●</div>
+        <div class="step-body">
+          <div class="step-title">【東海東京証券】STARモバイル</div>
+          <div class="step-desc" style="margin-top:6px;">
+            ・1端末のみ利用可能<br>
+            ・申し込み時に使いやすいPCで申請するよう案内しているが、会社PCに証明書を登録している可能性あり。その場合は情報変更（証明書再発行）後、自宅PCへ証明書を登録<br>
+            ・BIG-IP Edge Clientとは接続方式が異なるため、別途システムインストールが必要
+          </div>
+          <div class="caution">⚠ 東海東京証券のSTARモバイルは現在どのPCで設定されていますか？と確認必須</div>
+        </div>
+      </div>
+
     </div>
   </div>
 
@@ -603,23 +693,7 @@
     </div>
   </div>
 
-  <!-- Section 6: 完了チェックリスト -->
-  <div class="section">
-    <div class="sec-head">
-      <span class="sec-num">06</span>
-      <span class="sec-title">サポート完了チェックリスト</span>
-    </div>
-    <div class="checklist">
-      <div class="check-item"><div class="check-box"></div>Tailscaleのインストールが完了している</div>
-      <div class="check-item"><div class="check-box"></div>会社のMicrosoftアカウントでログインできている</div>
-      <div class="check-item"><div class="check-box"></div>管理コンソールで端末が表示・承認されている</div>
-      <div class="check-item"><div class="check-box"></div>タスクトレイに「Connected」が表示されている</div>
-      <div class="check-item"><div class="check-box"></div>所属支店のExit nodeが選択できている</div>
-      <div class="check-item"><div class="check-box"></div>証券会社のシステムに正常にアクセスできた</div>
-      <div class="check-item"><div class="check-box"></div>Exit nodeをNoneに戻す操作を練習してもらった</div>
-      <div class="check-item"><div class="check-box"></div>操作マニュアル（日常操作ガイド）のURLを共有した</div>
-    </div>
-  </div>
+
 
 </div>
 </body>
